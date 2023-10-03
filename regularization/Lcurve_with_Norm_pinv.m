@@ -20,7 +20,7 @@ eigL(eigL<tol)  = tol;   % if eigL < 1e-20, set it to be 1e-20;
 % 2. (A + lambda B)c = b  ====> Ac-b = -lambda * B * c
 N = 1000;
 if plotON==1; N=200; end
-lambda_seq = 10.^(linspace(log10(min(eigL(eigL>1e-12)))-2, log10(max(eigL)), N));
+lambda_seq = 10.^(linspace(log10(min(eigL(eigL>1e-12)))-2, log10(min(1,max(eigL))), N));
 %lambda_seq = 10.^(linspace(-16, 10, N));
 len = length(lambda_seq);
 E = zeros(len,1);    % error/loss 

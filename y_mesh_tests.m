@@ -25,14 +25,16 @@ exp_poly = sysInfo.kernel_type;
 %% Get: A_conti rho and L2(rho) basis matrix B 
 A_continuous = L_operator_fine'*L_operator_fine;  
 
-% rho = sum(L_operator_fine);  rho = rho/(sum(rho)*dx);  % normalize, does not seem necessary for this example, maybe other examples
- figure; % plot the exploration measure 
-% plot(xgrid, rho,'linewidth',1); xlabel('u');ylabel('rho'); hold on;  
-rho_exact     = @(u) u.^(-3).*(1-exp(-u*sysInfo.T ));  
-rho_exact_val = rho_exact(xgrid); rho_exact_val = rho_exact_val'/(sum(rho_exact_val)*dx);
-plot(xgrid, rho_exact_val,'-.','linewidth',1); 
-% max(rho-rho_exact_val);
-rho = rho_exact_val; 
+ rho = sum(L_operator_fine);  rho = rho/(sum(rho)*dx);  % normalize, does not seem necessary for this example, maybe other examples
+ if strcmp(exp_poly,'exp')  % the analytical rho when exp; 
+     figure; % plot the exploration measure
+     plot(xgrid, rho,'linewidth',1); xlabel('u');ylabel('rho'); hold on;
+     rho_exact     = @(u) u.^(-3).*(1-exp(-u*sysInfo.T ));
+     rho_exact_val = rho_exact(xgrid); rho_exact_val = rho_exact_val'/(sum(rho_exact_val)*dx);
+     plot(xgrid, rho_exact_val,'-.','linewidth',1);
+     max(rho-rho_exact_val);
+     rho = rho_exact_val;
+ end
 B   = diag(rho);
 
 
@@ -47,7 +49,7 @@ method = 'svdA'; % 'svdA' 'svdAB': should use svdA, which uses eig(A,B), because
 % f_true_func = @(x) 0.7*exp(-(x-2).^2/0.25)*sqrt(1/(2*.5*pi)) +.3*exp(-(x-4).^2/0.09)*sqrt(1/(2*0.3*pi));   % True f
 % f_true_func = @(x) 15*((sin(x-6)).^2-3);   % True f
 % f_true_func = @(x) 15*((sin(2*x-6)).^2-3);
-  f_true_func = @(x) x.^2;   % True f
+f_true_func = @(x) x.^2;   % True f
 f_true = f_true_func(xgrid);
 % f_true = 0.1*V_AB(:,2) +2*V_AB(:,30) ; 
 % figure; plot(xgrid,f_true/(dx*sum(f_true))); 
@@ -112,7 +114,7 @@ f_true = V_AB(:,1:5)*(1:5)';           case_num= '2';  % numerically: not in RKH
  % f_true = V_AB(:,5);    % ind>5 ( i.e, eigAB<1e-9): rkhs not good, l2+L2 can slightly tolerate more, bc. not using rkhs inversion).
  % f_true = f_true/sqrt(dx*sum(f_true)); 
 f_true = V_AB(:,2);                    case_num= '';   % numerically: in RKHS, in FSOI; no decay coefs as theorem 3
-f_true = V_AB(:,1:5)*sqrt(eigAB(1:5)); case_num= '3';  % numerically: in RKHS, in FSOI; with decaying coefs >>> sharp rate
+% f_true = V_AB(:,1:5)*sqrt(eigAB(1:5)); case_num= '3';  % numerically: in RKHS, in FSOI; with decaying coefs >>> sharp rate
 
 
 file_str  = ['ymesh_insideFSOI_',case_num,'_',method,exp_poly]; 

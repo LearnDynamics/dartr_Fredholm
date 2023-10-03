@@ -35,7 +35,7 @@ n = length(b1);
 % 2. (A + lambda B)c = b  ====> Ac-b = -lambda * B * c
 N  = 1000;
 % lambda_seq = 10.^(linspace(-20, log10(max(eigL)), N)); 
-lambda_seq = 10.^(linspace(log10(min(eigL(eigL>1e-12)))-2, log10(max(eigL)), N));
+lambda_seq = 10.^(linspace(log10(min(eigL(eigL>1e-12)))-2, log10(min(max(eigL),1)), N));
 % lambda_seq = linspace(min(eigL)*1e-3, max(eigL(4:end)), N);
 len = length(lambda_seq);
 E   = zeros(len,1);
