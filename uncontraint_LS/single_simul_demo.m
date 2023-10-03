@@ -53,11 +53,11 @@ if plotON==1
     subplot(121);
     % projection to the V_AB
     titl = 'EigenAB projection';
-    plot_estimators_projection(B,V_AB,2*r,est_array,lgnd,titl,new_figure);
+    plot_estimators_projection(B,V_AB,min(2*r,length(B(1,:))),est_array,lgnd,titl,new_figure);
     % project to V_A
     subplot(122);
     titl = 'EigenA projection';
-    plot_estimators_projection(eye(xn),V_A,2*r,est_array,lgnd,titl,new_figure);
+    plot_estimators_projection(eye(xn),V_A,min(2*r,length(B(1,:))),est_array,lgnd,titl,new_figure);
     if exist('figname','var')
         set_positionFontsAll;   print([figname,'projection.pdf'],'-dpdf', '-bestfit');
     end

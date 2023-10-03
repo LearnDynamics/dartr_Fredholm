@@ -17,7 +17,7 @@ normType  = {'l2','L2','RKHS'};
  % f_true = 0.1*V_AB(:,2) +2*V_AB(:,30) ; 
 %  figure; plot(xgrid,f_true/(dx*sum(f_true))); 
  
-file_str  =['outsideFSOI_',method];   % 'outsideFSOI'; % %'outsideFSOI_Gaussian_mix'; 
+file_str  =['outsideFSOI_',method,exp_poly];   % 'outsideFSOI'; % %'outsideFSOI_Gaussian_mix'; 
 data_name = [SAVE_DIR,'/data_',file_str,'.mat']; 
 fig_dir  = [SAVE_DIR,'figures/']; if ~exist(fig_dir,'dir'), mkdir(fig_dir); end  
 
@@ -68,7 +68,7 @@ f_true = V_AB(:,2);                    case_num= '';   % numerically: in RKHS, i
 % f_true = V_AB(:,1:5)*sqrt(eigAB(1:5)); case_num= '3';  % numerically: in RKHS, in FSOI; with decaying coefs >>> sharp rate
 
 
-file_str  = ['insideFSOI_',case_num,'_',method]; 
+file_str  = ['insideFSOI_',case_num,'_',method,exp_poly]; 
 data_name = [SAVE_DIR,'/data_',file_str,'.mat']; 
 fig_dir  = [SAVE_DIR,'figures/']; if ~exist(fig_dir,'dir'), mkdir(fig_dir); end  
 

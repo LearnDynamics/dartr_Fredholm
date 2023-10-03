@@ -20,6 +20,7 @@ xgrid = sysInfo.xgrid;
 dx    = sysInfo.dx;
 ymesh_seq  = sysInfo.dt*gap_seq; 
 
+exp_poly = sysInfo.kernel_type; 
 
 %% Get: A_conti rho and L2(rho) basis matrix B 
 A_continuous = L_operator_fine'*L_operator_fine;  
@@ -37,7 +38,7 @@ B   = diag(rho);
 
 %% analysis function space of identifability 
 method = 'svdA'; % 'svdA' 'svdAB': should use svdA, which uses eig(A,B), because otherwise, the G-eig does not satisify AV= BVS, V'BV=I.
-[V_A,eigA,V_AB, eigAB,r]= EigenAB_fsoi(A_continuous,B,1,method); 
+[V_A,eigA,V_AB, eigAB,r]= EigenAB_fsoi(A_continuous,B,1,method,exp_poly); 
 
 
 %% 1. f_true outside the FSOI: 
@@ -51,7 +52,7 @@ f_true = f_true_func(xgrid);
 % f_true = 0.1*V_AB(:,2) +2*V_AB(:,30) ; 
 % figure; plot(xgrid,f_true/(dx*sum(f_true))); 
  
-file_str  = ['ymesh_outsideFSOI_',method]; % 'outsideFSOI_Gaussian_mix'; 
+file_str  = ['ymesh_outsideFSOI_',method,exp_poly]; % 'outsideFSOI_Gaussian_mix'; 
 data_name = [SAVE_DIR,'/data_',file_str,'.mat']; 
 fig_dir   = [SAVE_DIR,'/figures/']; if ~exist(fig_dir,'dir'), mkdir(fig_dir); end  
 
@@ -114,7 +115,7 @@ f_true = V_AB(:,2);                    case_num= '';   % numerically: in RKHS, i
 f_true = V_AB(:,1:5)*sqrt(eigAB(1:5)); case_num= '3';  % numerically: in RKHS, in FSOI; with decaying coefs >>> sharp rate
 
 
-file_str  = ['ymesh_insideFSOI_',case_num,'_',method]; 
+file_str  = ['ymesh_insideFSOI_',case_num,'_',method,exp_poly]; 
 data_name = [SAVE_DIR,'/data_',file_str,'.mat']; 
 fig_dir  = [SAVE_DIR,'/figures/']; if ~exist(fig_dir,'dir'), mkdir(fig_dir); end  
 

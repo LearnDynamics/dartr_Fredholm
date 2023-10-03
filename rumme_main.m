@@ -1,6 +1,11 @@
 % Adaptive RKHS regularization for discrete Fredhold integral equation
 %{
-weighted Deconvolution in the form of inversion
+ Dicrete-Fredholm integral equation:
+      \int_lb^rb K(t,x) f(x)dx + noise = y(t)
+ Goal: Given y(t) at discrete-times, to estimate f
+%}
+%{
+In general: weighted Deconvolution in the form of inversion
                L f = y,   size(L) =  n_y x n_u       size(f) = n_u 
 Solution: least square with RKHS-regularization 
 Key: space of identifiability, exploration measure, RKHS regularization 
@@ -21,6 +26,7 @@ tgrid = sysInfo.tgrid;
 xgrid = sysInfo.xgrid;
 dx    = sysInfo.dx;
 
+exp_poly = sysInfo.kernel_type; 
 
 %% Get regression matrix A, 
 % to get vector b later for different f
@@ -30,16 +36,17 @@ A = L_operator'*L_operator;
 rho = sum(L_operator);  rho = rho/(sum(rho)*dx);  % normalize, does not seem necessary for this example, maybe other examples
 figure; % plot the exploration measure 
 plot(xgrid, rho,'linewidth',1); xlabel('u');ylabel('rho');
-rho_exact     = @(u) u.^(-3).*(1-exp(-u*sysInfo.T ));  
-rho_exact_val = rho_exact(xgrid); rho_exact_val = rho_exact_val/(sum(rho_exact_val)*dx);
-hold on; 
-plot(xgrid, rho_exact_val,'-.','linewidth',1); 
-
+if strcmp(sysInfo.kernel_type,'exp')
+    rho_exact     = @(u) u.^(-3).*(1-exp(-u*sysInfo.T ));
+    rho_exact_val = rho_exact(xgrid); rho_exact_val = rho_exact_val/(sum(rho_exact_val)*dx);
+    hold on;
+    plot(xgrid, rho_exact_val,'-.','linewidth',1);
+end
 B          = diag(rho);
 
 %% analysis function space of identifability 
 method = 'svdA'; % 'svdA' 'svdAB': should use svdA, which uses eig(A,B), because otherwise, the G-eig does not satisify AV= BVS, V'BV=I.
-[V_A,eigA,V_AB, eigAB,r]= EigenAB_fsoi(A,B,1,method); 
+[V_A,eigA,V_AB, eigAB,r]= EigenAB_fsoi(A,B,1,method,exp_poly); 
 % % % compuareGSVD_Geig(A,B);   % compare gsvd and eig(A,B) for G-eig. Should use eig(A,B), not svd(A/B)
 
 %% unconstained LSE with regularuzations: l2, L2, RKHS

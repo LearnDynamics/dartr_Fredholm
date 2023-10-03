@@ -43,7 +43,7 @@ plot(xgrid, rho,'linewidth',1); xlabel('u');ylabel('rho');
 B   = diag(rho);
 
 %% analysis function space of identifability 
-[V_A,eigA,V_AB, eigAB,r]= EigenAB_fsoi(A,B,1); 
+[V_A,eigA,V_AB, eigAB,r]= EigenAB_fsoi(A,B,1,'svdA',exp_poly); 
 
 %% unconstained LSE with regularuzations: l2, L2, RKHS
 plotON = 1;  
@@ -71,11 +71,11 @@ if plotON==1
     subplot(121);
     % projection to the V_AB
     titl = 'EigenAB projection';
-    plot_estimators_projection(B,V_AB,2*r,est_array,lgnd,titl,new_figure);
+    plot_estimators_projection(B,V_AB,min(2*r,length(B(1,:))),est_array,lgnd,titl,new_figure);
     % project to V_A
     subplot(122);
     titl = 'EigenA projection';
-    plot_estimators_projection(eye(xn),V_A,2*r,est_array,lgnd,titl,new_figure);
+    plot_estimators_projection(eye(xn),V_A,min(2*r,length(B(1,:))),est_array,lgnd,titl,new_figure);
     if exist('figname','var')
         set_positionFontsAll;   print([figname,'projection.pdf'],'-dpdf', '-bestfit');
     end

@@ -1,4 +1,4 @@
-function [V_A,eigA,V_L, eigL,r]= EigenAB_fsoi(A,B, plotON,method)
+function [V_A,eigA,V_L, eigL,r]= EigenAB_fsoi(A,B, plotON,method,exp_poly)
 %% plot the eigenvalues of A and generalized (A,B)
 
 if ~exist('method','var')
@@ -46,7 +46,7 @@ end
     semilogy(1:r,eigL_abs(1:r),'b-o','linewidth',1);
     legend('Eigenvalue A','Eigenvalue (A,B)');% title('Eigenvalue of A and (A,B)')
     xlabel('i'); ylabel('\lambda_i');
-    figname = ['eigen_val_vec',method];
+    figname = ['eigen_val_vec',method,exp_poly];
     if exist('figname','var')
         set_positionFontsAll;   print([figname,'.pdf'],'-dpdf', '-bestfit');
     end  
