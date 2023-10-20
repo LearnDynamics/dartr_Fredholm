@@ -11,7 +11,10 @@ for n=1:n_est-1
     plot(tgrid, L_operator*f_est,linestyle{n},'Color',dred_do_db(n,:),'linewidth',1);hold on;
 end
 plot(tgrid, y_true,'k:','linewidth',2);hold on;
-plot(tgrid, y,':x','linewidth',0.5);
+scatter(tgrid,y,'+','MarkerEdgeColor',[0.4660 0.6740 0.1880],'MarkerEdgeAlpha',0.6)
+% plot(tgrid, y,':','linewidth',1,'Color',[0.4660 0.6740 0.1880,0.9]); % [0.2 0.5 0.9 0.2]);
+
+
 lgnd = [lgnd(1:end-1),'True','Observed',];
 xlim([tgrid(1),tgrid(end)*1.01]); 
 title('Estimated y');legend(lgnd); legend('location','best')

@@ -32,8 +32,8 @@ sysInfo.tn = tn;
 sysInfo.xn = xn;
 sysInfo.phi = @(t, x) x.^(-2).*exp(-x.*t); % This phi is the integral kernel K(t,x)
 sysInfo.kernel_type = 'exp'; 
-sysInfo.phi = @(t, x) x.^(-1).*abs(sin(x.*t +1)); % This phi is the integral kernel K(t,x)
-sysInfo.kernel_type = 'poly'; 
+% sysInfo.phi = @(t, x) x.^(-1).*abs(sin(x.*t +1)); % This phi is the integral kernel K(t,x)
+% sysInfo.kernel_type = 'poly'; 
 
 %% 
 % f_true_func = @(x) (sin(x-6)).^2-3;   % True f

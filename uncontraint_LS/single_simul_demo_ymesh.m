@@ -97,3 +97,7 @@ fprintf('Loss values: l2,L2,rkhs \n')
 loss_array  = [cLcurveAll.creg_l2_loss_val,cLcurveAll.creg_L2_loss_val,cLcurveAll.creg_RKHS_loss_val]
 
 
+%{
+figname = [fig_dir,file_str,'L_curve_l2']; 
+set_positionFontsAll;   print([figname,'.pdf'],'-dpdf', '-bestfit');
+%}
