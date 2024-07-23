@@ -15,7 +15,7 @@ Key: space of identifiability, exploration measure, RKHS regularization
 
 
 clc; close all; clear all;
-add_mypaths_discrete;    % get SAVE_DIR = local dir for saving data
+add_mypaths_discrete;                    % get SAVE_DIR = local dir for saving data
 rng(1)
 %% Load system settings
 sysInfo    = system_settings();
@@ -26,7 +26,7 @@ tgrid = sysInfo.tgrid;
 xgrid = sysInfo.xgrid;
 dx    = sysInfo.dx;
 
-exp_poly = sysInfo.kernel_type; 
+exp_poly = sysInfo.kernel_type;          % decay of the spectrum of the operator of inversion (L_G)
 
 %% Get regression matrix A, 
 % to get vector b later for different f

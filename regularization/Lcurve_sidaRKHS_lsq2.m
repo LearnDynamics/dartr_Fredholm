@@ -15,7 +15,7 @@ B_rkhs     = pinv(V*diag(real(eigL))*V');   % pinv(Abar);  B_rkhs= inv(Abar) whe
 [V, eigL]  = eig(A,Bmat);  % generalized eigenvalue   A V = B*V*eigL; V'*B*V =I;  V'*A*V = eigL; >>>  B_rkhs = inv(V*diag(eigL)*V')
 eigL       = real(diag(eigL));  [~,ind] = sort(eigL,'descend'); % V'*A*V = eigL; V'*B*V =I;
 eigL       = eigL(ind); V = V(:,ind);
-tol  = 1e-20; 
+tol  = 1e-14; 
 eigL(eigL<tol)  = tol;   % if eigL < 1e-20, set it to be 1e-20; 
 
 % B_rkhs = pinv(V*diag(eigL)*V');             % round off error is too large when eigL is almost singular

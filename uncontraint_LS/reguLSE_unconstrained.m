@@ -14,6 +14,12 @@ normType  = {'l2','L2','RKHS'};
  f_true_func = @(x) x.^2;   %    outside FSOI: components nonzero, but has decaying coefs inside FSOI
  f_true = f_true_func(xgrid);
 
+ if strcmp(sysInfo.kernel_type, 'Vogel')
+      f_true_func = @(x) pi*(1-x); 
+      f_true = f_true_func(xgrid);
+ end
+
+
  % f_true = 0.1*V_AB(:,2) +2*V_AB(:,30) ; 
 %  figure; plot(xgrid,f_true/(dx*sum(f_true))); 
  

@@ -12,9 +12,7 @@ switch method
          [Usvd,eigA,Vsvd] = svd(A);      [eigA, indA] = sort(diag(eigA),'descend');   V_A = Usvd(:, indA);
 
         [V_L, eigL0]  = eig(A, B);   % A*V = B*V*D.   V'*B*V = I;  % --- it may have negative small eigenvalues 
-        [eigA, indA]  = sort(diag(eigA),'descend');
         [eigL, indAB] = sort(diag(eigL0),'descend');     
-        V_A           = V_A(:, indA);
         V_L           = V_L(:, indAB);
     case 'svdAB'   % for G-eig(A,B) % A = U*S*V';  U is "same" as V_A (different sign); but S is nonnegative
         [Usvd,eigA,Vsvd] = svd(A);      [eigA, indA] = sort(diag(eigA),'descend');   V_A = Usvd(:, indA);
@@ -42,9 +40,15 @@ end
     eigA_abs = abs(eigA(eigA>0));  r_eigA = length(eigA_abs); 
     eigL_abs = abs(eigL(eigL>0));  r_eigL = length(eigL_abs); 
     r   = min(r_eigA,r_eigL);
-    semilogy(1:r,eigA_abs(1:r),'r-x','linewidth',1); hold on;
-    semilogy(1:r,eigL_abs(1:r),'b-o','linewidth',1);
-    legend('Eigenvalue A','Eigenvalue (A,B)');% title('Eigenvalue of A and (A,B)')
+    if strcmp(exp_poly, 'Vogel')
+        loglog(1:r,eigA_abs(1:r),'r-x','linewidth',1); hold on;
+        loglog(1:r,eigL_abs(1:r),'b-o','linewidth',1);
+    else
+        semilogy(1:r,eigA_abs(1:r),'r-x','linewidth',1); hold on;
+        semilogy(1:r,eigL_abs(1:r),'b-o','linewidth',1);
+    end
+
+    legend({'Singular values of A','Eigenvalue ($A^\top A,B$)'},'Interpreter','latex');% title('Eigenvalue of A and (A,B)')
     xlabel('i'); ylabel('\lambda_i');
     figname = ['eigen_val_vec',method,exp_poly];
     if exist('figname','var')
@@ -60,7 +64,7 @@ if plotON ==1
     subplot(131)
     semilogy(abs(eigA(eigA>0)),'r-x','linewidth',1); hold on;
     semilogy(abs(eigL(eigL>0)),'b-o','linewidth',1);
-    legend('Eigenvalue A','Eigenvalue (A,B)');title('Eigenvalue of A and (A,B)')
+    legend({'Singular values of A','Eigenvalue ($A^\top A,B$)'},'Interpreter','latex'); % title('Eigenvalue of A^\top A and (A^\top A,B)')
     xlabel('i'); ylabel('\lambda_i');
     
     subplot(132)

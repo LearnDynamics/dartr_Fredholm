@@ -10,7 +10,7 @@ normType  = {'l2','L2','RKHS'};
 
 % % in discrete: sysInfo.tn = 5000; for [0,5]
 sysInfo     = system_settings();
-sysInfo.tn  = 10000;   % 5000
+sysInfo.tn  = 2000;   % 5000
 sysInfo     = update_system_settings(sysInfo); 
 L_operator_fine = sysInfo.L_operator; 
 xn    = sysInfo.xn;
@@ -53,7 +53,11 @@ f_true_func = @(x) x.^2;   % True f
 f_true = f_true_func(xgrid);
 % f_true = 0.1*V_AB(:,2) +2*V_AB(:,30) ; 
 % figure; plot(xgrid,f_true/(dx*sum(f_true))); 
- 
+ if strcmp(sysInfo.kernel_type, 'Vogel')
+      f_true_func = @(x) pi*(1-x); 
+      f_true = f_true_func(xgrid);
+ end
+
 file_str  = ['ymesh_outsideFSOI_',method,exp_poly]; % 'outsideFSOI_Gaussian_mix'; 
 data_name = [SAVE_DIR,'/data_',file_str,'.mat']; 
 fig_dir   = [SAVE_DIR,'/figures/']; if ~exist(fig_dir,'dir'), mkdir(fig_dir); end  
@@ -113,7 +117,7 @@ set_positionFontsAll;   print([figname,'.pdf'],'-dpdf', '-bestfit');
 f_true = V_AB(:,1:5)*(1:5)';           case_num= '2';  % numerically: not in RKHS, not in FSOI since eig5 is large
  % f_true = V_AB(:,5);    % ind>5 ( i.e, eigAB<1e-9): rkhs not good, l2+L2 can slightly tolerate more, bc. not using rkhs inversion).
  % f_true = f_true/sqrt(dx*sum(f_true)); 
-f_true = V_AB(:,2);                    case_num= '';   % numerically: in RKHS, in FSOI; no decay coefs as theorem 3
+f_true = V_AB(:,2);                    case_num= '2';   % numerically: in RKHS, in FSOI; no decay coefs as theorem 3
 % f_true = V_AB(:,1:5)*sqrt(eigAB(1:5)); case_num= '3';  % numerically: in RKHS, in FSOI; with decaying coefs >>> sharp rate
 
 

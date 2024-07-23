@@ -30,10 +30,25 @@ sysInfo.rb = rb;
 sysInfo.T = T;
 sysInfo.tn = tn;
 sysInfo.xn = xn;
-sysInfo.phi = @(t, x) x.^(-2).*exp(-x.*t); % This phi is the integral kernel K(t,x)
-sysInfo.kernel_type = 'exp'; 
-% sysInfo.phi = @(t, x) x.^(-1).*abs(sin(x.*t +1)); % This phi is the integral kernel K(t,x)
-% sysInfo.kernel_type = 'poly'; 
+
+%% select kernel types 
+sysInfo.kernel_type = 'Vogel';  % 'exp'; 'poly'; 
+switch sysInfo.kernel_type
+    case 'exp'
+        sysInfo.phi = @(t, x) x.^(-2).*exp(-x.*t); % This phi is the integral kernel K(t,x)
+        % sysInfo.kernel_type = 'exp'; 
+    case 'poly'
+        sysInfo.phi = @(t, x) x.^(-1).*abs(sin(x.*t +1)); % This phi is the integral kernel K(t,x)
+        % sysInfo.kernel_type = 'poly'; 
+    case 'Vogel'      % Vogel's example: Vogel1996: non-convergence of the L-curve regularization parameter selection method
+        fun_a = @(z) 30*abs(z).*(1-abs(z)); % 30*z.*(1-z); %  periodic, z in [0,1] % 30*abs(z).*(1-abs(z)); 
+        sysInfo.phi = @(t, x) fun_a(t-x); % This phi is the integral kernel K(t,x)
+       % sysInfo.kernel_type = 'Vogel';     
+       sysInfo.lb = 0;       sysInfo.rb = 1; sysInfo.xn = tn; 
+       sysInfo.T  = 1;       sysInfo.tn = tn; 
+       % sysInfo.tn = 100;  sysInfo.xn = 100;
+end 
+
 
 %% 
 % f_true_func = @(x) (sin(x-6)).^2-3;   % True f
