@@ -9,7 +9,9 @@ In general: weighted Deconvolution in the form of inversion
                L f = y,   size(L) =  n_y x n_u       size(f) = n_u 
 Solution: least square with RKHS-regularization 
 Key: space of identifiability, exploration measure, RKHS regularization 
-@Copyright: Fei Lu, feilu@math.jhu.edu. 2023/10/2
+@Copyright: Fei Lu, feilu@math.jhu.edu. 2023/10/2-2024/7/22
+
+-- TO Further update: use SVD as input for regularizers to avoid repetitive computation.  
 %}
 
 
@@ -53,16 +55,17 @@ method = 'svdA'; % 'svdA' 'svdAB': should use svdA, which uses eig(A,B), because
 % includes a single test for demonstration and tuning and multiple tests for robustness
 reguLSE_unconstrained; 
 
-return; 
+
 
 %% y-mesh tests: it is a different topic: the model changes with mesh. 
 y_mesh_tests; 
 
+return; 
+
+
 %% additional explorations: weighted loss; constraied inversion. NOT included in paper. 
 
 %% test weighted loss: not good.
-%{
-%}
 script_weighted_loss; 
 
 %% constrained inversion: 

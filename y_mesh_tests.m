@@ -58,7 +58,7 @@ f_true = f_true_func(xgrid);
       f_true = f_true_func(xgrid);
  end
 
-file_str  = ['ymesh_outsideFSOI_',method,exp_poly]; % 'outsideFSOI_Gaussian_mix'; 
+file_str  = ['ymesh_outsideFSOI_',method,'_',exp_poly]; % 'outsideFSOI_Gaussian_mix'; 
 data_name = [SAVE_DIR,'/data_',file_str,'.mat']; 
 fig_dir   = [SAVE_DIR,'/figures/']; if ~exist(fig_dir,'dir'), mkdir(fig_dir); end  
 
@@ -71,34 +71,6 @@ fprintf('Multiple tests: f true outside the FSOI\n ');
 [err_L2rho_projAB,err_cells,err_l2_projA,loss_array,disc_est] = multi_simuls_ymesh(f_true,A,B,V_AB,V_A,r,xgrid,rho,eigAB,sysInfo,gap_seq,nsr,normType,data_name);
 
  newfigure =0; xlabelstr = '\Delta t'; 
-% label_y = 'L^2(\rho) error'; 
-% fig_name = [fig_dir,file_str,'_L2rho_error']; 
-% plot_mean_std(log10(ymesh_seq),err_L2rho_projAB,newfigure,normType,label_y,fig_name,xlabelstr);  
-% 
-% label_y = 'l2 error';
-% fig_name = [fig_dir,file_str,'_l2error']; 
-% plot_mean_std(log10(ymesh_seq),err_l2_projA,newfigure,normType,label_y,fig_name,xlabelstr);  
-% 
-% label_y = 'Loss value';
-% fig_name = [fig_dir,file_str,'_loss']; 
-% plot_mean_std(log10(ymesh_seq),log10(loss_array),newfigure,normType,label_y,fig_name,xlabelstr);  
-
-% % fig_name = [fig_dir,file_str,'_full_estimator_err_'];
-% % full_estimator_err(err_cells,normType,fig_name,ymesh_seq,xlabelstr);
-
-% % discA estimator
-% label_y = 'L^2(\rho) error (Log10)'; 
-% fig_name = [fig_dir,file_str,'_L2rho_error_discA']; 
-% plot_mean_std(log10(ymesh_seq),log10(disc_est.err_L2rho_projAB),newfigure,normType,label_y,fig_name,xlabelstr);  
-% 
-% label_y = 'l2 error (Log10) ';
-% fig_name = [fig_dir,file_str,'_l2error_discA']; 
-% plot_mean_std(log10(ymesh_seq),log10(disc_est.err_l2_projA),newfigure+1,normType,label_y,fig_name,xlabelstr);  
-% 
-% label_y = 'Loss value (Log10)';
-% fig_name = [fig_dir,file_str,'_loss_discA']; 
-% plot_mean_std(log10(ymesh_seq),log10(disc_est.loss_array),newfigure,normType,label_y,fig_name,xlabelstr); 
-
 
 figure; 
 subplot(121); 
