@@ -8,7 +8,7 @@ function [errors] = compute_estimator_Error(B,V_AB,eigAB,V_A,r,est_array,rho,xgr
 
 %% vector estimator: L2rho, l2  (L2 = l2* scalar)
 [n_vec,n_est] = size(est_array);  
-dx_array      = xgrid(2:end)-xgrid(1:end-1); dx_array = [dx_array;dx_array(end)]; 
+% dx_array      = xgrid(2:end)-xgrid(1:end-1); dx_array = [dx_array;dx_array(end)]; 
 true_val      = est_array(:,end);
 diff_array    = est_array(:,1:end-1)- true_val;  
 err_L2rho     = rho*diff_array.^2;         err_L2rho  = sqrt(err_L2rho); 

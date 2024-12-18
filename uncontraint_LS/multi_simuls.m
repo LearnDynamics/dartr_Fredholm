@@ -1,7 +1,8 @@
 
 
 
-function [err_L2rho_projAB,err_cells,err_l2_projA,loss_array] = multi_simuls(f_true,A,B,V_AB,V_A,r,xgrid,rho,eigAB,sysInfo,nsr_seq,normType,saveDIR)
+function [err_L2rho_projAB,err_cells,err_l2_projA,loss_array] =...
+     multi_simuls(f_true,A,B,V_AB,V_A,r,xgrid,rho,eigAB,sysInfo,nsr_seq,normType,saveDIR)
 if exist(saveDIR,'file')
     load(saveDIR); return; 
 end

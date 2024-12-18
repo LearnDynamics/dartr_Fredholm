@@ -9,6 +9,8 @@ addpath([parentpath '/regularization/']);
 addpath([parentpath '/plotsFn/']);
 addpath([parentpath '/uncontraint_LS/']);
 addpath([parentpath '/constraint_LS/']);
+addpath([parentpath '/examples/']);
+
 
 %% save data to your local DIR:  
 % making DIR to your root DIR

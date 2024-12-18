@@ -15,7 +15,6 @@ Key: space of identifiability, exploration measure, RKHS regularization
 %}
 
 
-
 clc; close all; clear all;
 add_mypaths_discrete;                    % get SAVE_DIR = local dir for saving data
 rng(1)

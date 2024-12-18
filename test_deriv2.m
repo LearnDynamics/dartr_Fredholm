@@ -1,27 +1,70 @@
-%% 
+% Using the example deriv2 for testing. 
+% Adaptive RKHS regularization for Discrete Fredhold integral equation
+%{
+ Dicrete-Fredholm integral equation:
+      \int_lb^rb K(t,x) f(x)dx + noise = y(t)
+ Goal: Given y(t) at discrete-times, to estimate f
+%}
+%{
+In general: weighted Deconvolution in the form of inversion
+               L f = y,   size(L) =  n_y x n_u       size(f) = n_u 
+Solution: least square with RKHS-regularization 
+Key words: space of identifiability, exploration measure, RKHS regularization 
+@Copyright: Fei Lu, feilu@math.jhu.edu. 2023/10/2-2024/12/20
 
+-- TO Further update: use SVD as input for regularizers to avoid repetitive computation.  
+%}
+
+
+
+clc; close all; clear all;
+add_mypaths_discrete;                    % get SAVE_DIR = local dir for saving data
+rng(1)
+%% Load system settings
+
+exp_poly = 'deriv2';
+n=200; 
+example =1; % example from 1, 2, 3
+[L_operator,b,f_true] = deriv2(n,example); 
+dx = 1/n;
+xgrid =  (1:n)*dx;  tgrid = xgrid; 
+
+xn    = n; tn    = n; 
+sysInfo.tn    = n; 
+sysInfo.tgrid = xgrid; 
+sysInfo.xgrid = xgrid; 
+sysInfo.dx    = dx;
+sysInfo.dt    = dx; sysInfo.T = 1; 
+sysInfo.L_operator = L_operator; 
+
+%% Get regression matrix A, 
+% to get vector b later for different f
+A = L_operator'*L_operator;  
+
+%% Get rho and L2(rho) basis matrix B 
+rho = sum(L_operator);  rho = rho/(sum(rho)*dx);  % normalize: not helpful if rho~unif; like pre-conditioning in ill-posed settings. 
+figure; % plot the exploration measure 
+plot(xgrid, rho,'linewidth',1); xlabel('u');ylabel('rho');
+B          = diag(rho);
+
+%% analysis function space of identifability 
+method = 'svdA'; % 'svdA' 'svdAB': should use svdA, which uses eig(A,B), because otherwise, the G-eig does not satisify AV= BVS, V'BV=I.
+[V_A,eigA,V_AB, eigAB,r]= EigenAB_fsoi(A,B,1,method,exp_poly); 
+
+
+%% unconstained LSE with regularuzations: l2, L2, RKHS
+% includes a single test for demonstration and tuning and multiple tests for robustness
 nsr_seq  = [0.125,0.25,0.5,1,2];     % noise to signal ratio    
            % -- issue when nsr=0: the optimal lambda=0, but numerical error in inversion prevents us from get to it.  
            % Solution: add lambda =0 estimator, and select between lambda_opt and 0 by min-loss ( a factor (1e2) to be robust) >> estimator
 normType  = {'l2','L2','RKHS'}; 
 
 %% 1. f_true outside the FSOI: 
-  % f_true from functions 
-% f_true_func = @(x) (sin(x-6)).^2+1;   % True f
-% f_true_func = @(x) 0.7*exp(-(x-2).^2/0.25)*sqrt(1/(2*.5*pi)) +.3*exp(-(x-4).^2/0.09)*sqrt(1/(2*0.3*pi));   % True f
- f_true_func = @(x) 15*((sin(x-6)).^2-3);   % True f
-% f_true_func = @(x) 15*((sin(2*x-6)).^2-3);
- f_true_func = @(x) x.^2;   %    outside FSOI: components nonzero, but has decaying coefs inside FSOI
- f_true = f_true_func(xgrid);
 
- if strcmp(sysInfo.kernel_type, 'Vogel')
-      f_true_func = @(x) pi*(1-x); 
-      f_true = f_true_func(xgrid);
- end
 
 
  % f_true = 0.1*V_AB(:,2) +2*V_AB(:,30) ; 
-%  figure; plot(xgrid,f_true/(dx*sum(f_true))); 
+% figure; plot(xgrid,f_true/(dx*sum(f_true))); 
  
 file_str  =['outsideFSOI_',method,exp_poly];   % 'outsideFSOI'; % %'outsideFSOI_Gaussian_mix'; 
 data_name = [SAVE_DIR,'/data_',file_str,'.mat']; 
