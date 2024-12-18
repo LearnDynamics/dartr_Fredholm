@@ -23,7 +23,7 @@ if  max(true_val)>0;   ub = max(true_val)*1.2;
 else;                  ub = max(true_val)*0.8; 
 end 
 yyaxis left; ylim([lb,ub]);
-xlabel('u'); ylabel('f(u)'); 
+xlabel('s'); ylabel('\phi'); 
 
 % super-impose rho
 yyaxis right;  
